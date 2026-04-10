@@ -1,0 +1,6 @@
+[submodule "backend"]
+	path = backend
+	url = https://github.com/duo-route/backend.git
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/duo-route/frontend.git
