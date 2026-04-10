@@ -1,0 +1,35 @@
+services:
+  # 사용할 DB가 결정되면 주석을 해제하고 설정
+  # db:
+  #   image:
+  #   container_name: duo-route-db
+  #   restart: always
+  #   ports:
+  #     - ":"
+  #   environment: ...
+
+  # 1. 백엔드 (Spring Boot)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: duo-route-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    # depends_on:
+    #   - db
+    # environment:
+    #   SPRING_DATASOURCE_URL:
+
+  # 2. 프론트엔드 (Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: duo-route-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
