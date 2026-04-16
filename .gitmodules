@@ -4,3 +4,6 @@
 [submodule "frontend"]
 	path = frontend
 	url = https://github.com/duo-route/frontend.git
+[submodule "app"]
+	path = app
+	url = https://github.com/duo-route/app.git
