@@ -1,12 +1,14 @@
 services:
-  # 사용할 DB가 결정되면 주석을 해제하고 설정
-  # db:
-  #   image:
-  #   container_name: duo-route-db
-  #   restart: always
-  #   ports:
-  #     - ":"
-  #   environment: ...
+  db:
+    image: postgres:17
+    container_name: duo-route-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_POSTGRE_USERNAME}
+      POSTGRES_PASSWORD: ${DB_POSTGRE_PASSWORD} # 여기에 실제 사용할 비밀번호를 적으세요
+      POSTGRES_DB: postgres
 
   # 1. 백엔드 (Spring Boot)
   backend:
@@ -17,10 +19,13 @@ services:
     restart: always
     ports:
       - "8080:8080"
-    # depends_on:
-    #   - db
-    # environment:
-    #   SPRING_DATASOURCE_URL:
+    depends_on:
+      - db
+    environment:
+      # 🚨 중요: 도커 네트워크 안에서는 서비스 이름인 'db'가 호스트명이 됩니다.
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+      SPRING_DATASOURCE_USERNAME: ${DB_POSTGRE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${DB_POSTGRE_PASSWORD}
 
   # 2. 프론트엔드 (Nginx)
   frontend:
